@@ -1,107 +1,43 @@
-<!--You can put the main app nav anywhere in your output and it will be stripped out and moved, just make sure it's in a div ID'd as appNav -->
-<div id="appNav">
-	<h4>App Nav Title</h4>
-	<ul>
-		<li><a href="/index.php">Home</li>
-		<li class="on"><a href="/example.html">Example HTML</li>
-	</ul>
-</div>
+<!--YUI is used for layout if you load the yuitrip framework.-->
+<swm:css framework="yuitrip" />
 
-<!-- Everything should site within a pane. You can have one ore more panes on a page. -->
-<div class="pane">
-	
-	<h3>Heading within a pane should be an H3</h3>
-	
-	<!--To float stuff in a grid, just add class of grid and then small, medium, large-->
-	<div class="grid medium">
-		This is column 1 in a grid.
-	</div>
-	
-	<div class="grid medium">
-		This is column 2 in a grid.
-	</div>
-	
-	<div class="grid medium">
-		This is column 3 in a grid.
-	</div>
-	
-</div>
+<div id="doc3" class="yui-t7">
+   <div id="hd" role="banner"><h1>XHTML Framework</h1></div>
+   <div id="bd" role="main">
+	<div class="yui-g">
 
-<div class="pane">
-	
-	<h3>Form example</h3>
-	
-	<form action="" method="post">
-		
-		<!--As SWiM is strict XHTML hidden input elements need to be wrapped in a container. Either put them in a span or within the fieldset.-->
-		<span><input type="hidden" name="some data" value="blah" /></span>
-		
-		<!--For errors should be output like this-->
-		<div class="formErrors">
-			<h4>Oops! There were errors:</h4>
-			<ul>
-				<li><label for="field1">Field 1 - Put some data in you idiot.</label></li>
-			</ul>
-		</div>
-		
-		<!--Forms should be marked up within fieldsets in a definition list.-->
-		<fieldset>
-			<!--Fieldset titles should be marked up as follows-->
-			<legend><span>Fieldset title</span></legend>
-			
-			<dl>
-				<dt><label for="field1">This is my label</label></dt>
-				<dd><input type="text" id="field1" name="field1" /></dd>
-				<dd class="formInfo">You can put a field example or help using a DD classed with formInfo</dd>
-				
-				<!--You can span a field to full width easily by adding class of full-->
-				<dt><label for="field2">This is my second label</label></dt>
-				<dd class="full"><input type="text" id="field2" name="field2" /></dd>
-				<dd class="full formInfo">You can put a field example or help using a DD classed with formInfo</dd>
-				
-			</dl>
-			
-		</fieldset>	
-		
-		<p class="submitButton">
-			<input type="submit" id="submit" value="Save" />  <a href="/index.php">cancel</a>
+		<p>
+			To keep things simple, you don't generally need to worry too much about markup or CSS in SWM.			
 		</p>	
 		
-	</form>
-	
+		<p>
+			You tell SWM (via SWMML) the correct CSS framework to load and it will load it. You then just use the correct markup.
+		</p>
+		
+		<p>
+			Currently, SWM only uses one CSS framework called yuitrip. This is an amalgamation of YUI (for layout) and Blue Trip (for typograpy). To load the framework, include the SWMML tag anywhere in your output:
+			<code>
+				&#60;swm:css framework="yuitrip" /&#62;
+			</code>
+		</p>	
+		
+		<p>
+			If you want to load your own CSS, you should also do it via SWMML. For a more extensive guide, see the <a href="http://groups.google.com/group/swm-developers/web/swmml.pdf">SWMML doc</a>.
+		</p>
+		
+		<ul>
+			<li>Layout is done with YUI, you can use the <a href="http://developer.yahoo.com/yui/grids/builder/">YUI grid builder</a> to help you. You should use 100% width. <a href="//layout.php">Click here for an example.</a></li>
+			<li>Typography is done with Blue Trip. <a href="//typography.php">Click here for an example.</a></li>
+		</ul>
+		
+	</div>
+
+	</div>
+   <div id="ft" role="contentinfo"><p></p></div>
 </div>
 
-<div class="pane">
 
-	<h3>Tables and Pane Menu</h3>
-	
-	<!--You can add in a pane menu such as this-->
-	<ul class="paneActions menu">
-		<li class="on"><a href="/example.html">First Item</a></li>
-		<li><a href="/example.html">Second Item</a></li>
-		<!--Class the last item to remove the separator.-->
-		<li class="last"><a href="/example.html">Last Item</a></li>
-	</ul
-	
-	<!--Tables shouldnt need much adjustment-->
-	<table>
-		<tr>
-			<th>Field 1</th>
-			<th>Field 2</th>
-			<th>Field 3</th>
-			<th>Field 4</th>
-		</tr>
-
-		<tr>
-			<td>Data Row 1 Field 1</td>
-			<td>Data Row 2 Field 2</td>
-			<td>Data Row 3 Field 3</td>
-			<td>Data Row 4 Field 4</td>
-		</tr>
-	</table>
-	
-	
-</div>
+<!--You can put the main app nav anywhere in your output and it will be stripped out and moved, just make sure it's in a div ID'd as appNav -->
 <?php
 require_once('appnav.php');
 ?>
