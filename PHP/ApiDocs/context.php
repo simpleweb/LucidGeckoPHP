@@ -111,7 +111,7 @@ $lucidGecko = LucidGecko2::getInstance(PLUGIN_KEY, PLUGIN_SECRET);
 			</tr>			
 			<tr>
 				<td>
-					Company Key
+					Parent Company Key
 				</td>
 				<td>
 					<?=$lucidGecko->parentCompany['Key']?>
@@ -122,7 +122,7 @@ $lucidGecko = LucidGecko2::getInstance(PLUGIN_KEY, PLUGIN_SECRET);
 			</tr>
 			<tr>
 				<td>
-					Company Name
+					Parent Company Name
 				</td>
 				<td>
 					<?=$lucidGecko->parentCompany['Name']?>
