@@ -11,7 +11,7 @@
 		</p>	
 		
 		<p>
-			You tell SWM (via SWMML) the correct CSS framework to load and it will load it. You then just use the correct markup.
+			You tell SWM (via <a href="//swmml.php#swm:css">SWMML</a>) the correct CSS framework to load and it will load it. You then just use the correct markup.
 		</p>
 		
 		<p>

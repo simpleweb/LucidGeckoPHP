@@ -48,7 +48,6 @@ $lucidGecko = LucidGecko2::getInstance(PLUGIN_KEY, PLUGIN_SECRET);
 				<li>This app! Although this app is accessible via SWM, you can also get the code from Google Code at (<a href="http://code.google.com/p/lucidgecko/source/browse/#svn/trunk/PHP/ApiDocs">http://code.google.com/p/lucidgecko/source/browse/#svn/trunk/PHP/ApiDocs</a> to see exactly what each section is doing.</li>				
 				<li><a href="http://code.google.com/p/lucidgecko/">LucidGecko Library</a> - this is a simple code library that makes it simple for your app to communicate with SWM.</li>
 				<li>The <a href="http://groups.google.com/group/swm-developers">SWM Developer Google Group</a> - join this group, and if you have any development questions, ask them here.</li>
-				<li><a href="http://groups.google.com/group/swm-developers/web/swmml.pdf">SWMML Doc</a> - SWM uses a simple markup language called SWMML to add extended functionality. You will find this app uses it in numerous locations such as for loading the CSS framework.</li>
 			</ul>
 			
 		</div>
