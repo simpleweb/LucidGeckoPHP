@@ -43,7 +43,7 @@ if(isset($_POST['name'])) {
 		<p>It's possible to put variable data in to a message using placeholder tags such as {DATA} in each message.</p>
 		<p>The code to post a message looks like this (you do not need to specify extended data).</p>
 		<p>
-			<code>$lucidGecko->postActivity('testmessage', array('DATA' => 'Data item1', 'DATA2', => 'Data item2'));</code>
+			<code>$lucidGecko->postActivity('testmessage', array('DATA' => 'Data item1', 'DATA2' => 'Data item2'));</code>
 		</p>
 		
 		<p>Have a go, enter some random data below and then <a href="//activityfeed.php">check the activity</a>:</p>
