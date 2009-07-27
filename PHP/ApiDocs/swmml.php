@@ -143,7 +143,11 @@ aware of a problem.</p>
 
 <h4 class="fancy">Demo</h4>
 <p>Look at the top of the page! Note how SWM will move the output to the correct place.</p>
-<swm:flash message="This is a demo of the swm:flash SWMML tag!!!" />
+<swm:flash message="This is a demo of the swm:flash SWMML tag!!!" status="notice" />
+
+<h4 class="fancy">Example</h4>
+
+<code>&lt;swm:flash message=&quot;Something went horribly wrong!&quot; status=&quot;error&quot; /&gt;</code>
 
 <h4 class="fancy">Parameters</h4>
 
