@@ -157,7 +157,7 @@ aware of a problem.</p>
 	
 	<dt>[status]</dt>
 	<dd>Default value &quot;success&quot;. This is the type of message to output. Currently values can
-be &quot;success&quot; (will output message in green) or &quot;error&quot; (will output message in red).</dd>
+be &quot;success&quot; (will output message in green), &quot;info&quot; (will output message in yellow) or &quot;error&quot; (will output message in red).</dd>
 
 	<dt>[redirect]</dt>
 	<dd>If specified SWM will redirect to the specified page before output the message. It is
