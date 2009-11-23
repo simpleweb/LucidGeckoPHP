@@ -8,7 +8,7 @@ require_once 'Exceptions.php';
  */
 class LucidGecko {
 
-	const API_SERVER = "http://www.simplewebmanagement.com/api/";
+	const API_SERVER = "http://v1.simplewebmanagement.com/api/";
 	//const API_SERVER = "http://swmstage.simpleweb-online.com/api/";
 	//const API_SERVER = "http://swm/api/";
 	
