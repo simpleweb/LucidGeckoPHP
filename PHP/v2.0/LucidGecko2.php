@@ -573,7 +573,7 @@ class LucidGecko2 {
 				$ch = curl_init();
 				curl_setopt($ch, CURLOPT_URL, $this->apiServer.$format.'/'.$method);
 				//curl_setopt($ch, CURLOPT_POST, true);
-				//curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				
 				//Some servers (like Lighttpd) will not process the curl request without this header and will return error code 417 instead. 
 				//Apache does not need it, but it is safe to use it there as well.
