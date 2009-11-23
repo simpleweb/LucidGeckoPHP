@@ -587,10 +587,6 @@ class LucidGecko2 {
 				//die(http_build_query($params));
 				//http_build_query($params);
 				$rawResult = curl_exec($ch);
-			 
-			var_dump($rawResult);
-			die();
-			
 			
 			} else {
 				
