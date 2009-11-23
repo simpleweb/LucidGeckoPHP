@@ -579,9 +579,9 @@ class LucidGecko2 {
 				//Apache does not need it, but it is safe to use it there as well.
 				curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:"));
 				
-				//curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
+				curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($params));
 				//We have a problem here! The above causes file uploads to fail, the below doesn't work for activity.
-				curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+				//curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Lucid Gecko 2.0 API PHP5 Client 1.0 (curl) ' . phpversion());			
 					
 				//die(http_build_query($params));
