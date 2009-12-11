@@ -1,6 +1,6 @@
 <?php
 //Let's get cracking. Include the Swim API lib. This is known as LucidGecko.
-require_once('LucidGecko2/LucidGecko2.php');
+require_once('LucidGecko3/LucidGecko3.php');
 
 //Include a config file with our api details.
 require_once('config.php');
