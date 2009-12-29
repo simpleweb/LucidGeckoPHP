@@ -1,4 +1,4 @@
-<swm:nav>
+<swm:sidebar>
 	<div class="pane">
 		<h3 class="title">Contents</h3>
 	
@@ -13,4 +13,11 @@
 			<li<?= strtolower($_SERVER['SCRIPT_NAME']) == '/swmml.php' ? ' class="on"' : ''; ?>><a href="//swmml.php">SWMML</a></li>
 		</ul>
 	</div>
-</swm:nav>
+</swm:sidebar>
+
+<swm:titlenav>
+<ul id="appPageNav">
+	<li class="first"><a href="#">Nav item 1</a></li>
+	<li class="on"><a href="#">Nav item 2 on</a></li>
+</ul>
+</swm:titlenav>		
