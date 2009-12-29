@@ -1,6 +1,8 @@
 <swm:nav>
-	<div id="appNav">
-		<ul>
+	<div class="pane">
+		<h3 class="title">Contents</h3>
+	
+		<ul class="linkList">
 			<li<?= strtolower($_SERVER['SCRIPT_NAME']) == '/index.php' ? ' class="on"' : ''; ?>><a href="//index.php">Intro</a></li>
 			<li<?= strtolower($_SERVER['SCRIPT_NAME']) == '/context.php' ? ' class="on"' : ''; ?>><a href="//context.php">Context Information</a></li>
 			<li<?= strtolower($_SERVER['SCRIPT_NAME']) == '/postactivity.php' ? ' class="on"' : ''; ?>><a href="//postactivity.php">Posting To Activity Feed</a></li>
