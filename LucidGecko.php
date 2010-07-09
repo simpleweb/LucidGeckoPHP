@@ -1,12 +1,11 @@
 <?php
-
 /**
- * LucidGecko3 Platform API - now with added Workspace support!
- * TODO - depracate website support
+ * LucidGecko Platform API - now with added Workspace support!
+ * v4.100708
  * -----------------------
  * @author Tom Holder & Luke Marsden
  */
-class LucidGecko3 {
+class LucidGecko {
 	
 	const API_PATH = 'api/2.0/'; //Added due to issue 216
 	
@@ -21,9 +20,10 @@ class LucidGecko3 {
 	public $parentCompany;
 	public $company;
 	public $locationCompany;
-	public $website;
+	public $contactCompany;
 	public $workspace;
 	public $user;
+	public $person;
 	public $postbackUrl;
 	
 	//If set to true, friendly error messages will be output including the API call details.
@@ -31,9 +31,6 @@ class LucidGecko3 {
 
 	//If set each API call will be output to the browser. Should only ever be set in development.
 	public $outputCalls = false;
-	
-	//Holds details of the number of rows returned.
-	public $recordCount = array();
 			
 	public function  __construct($appKey, $appSecret, $installID = null, $installSecret = null, $apiServer = null) {
 		
@@ -46,24 +43,19 @@ class LucidGecko3 {
 		$this->installID = $installID;
 		$this->installSecret = $installSecret;
 
-		$this->parentCompany['Key'] = '';
-		$this->parentCompany['Name'] = '';
-		$this->company['Key'] = '';
-		$this->company['Name'] = '';
-		$this->website['Key'] = '';
-		$this->website['Domain'] = '';
+		$this->parentCompany['GUID'] = '';
+		$this->company['GUID'] = '';
+		$this->contactCompany['GUID'] = '';
 
 		$this->workspace['ID'] = '';
-		$this->workspace['Name'] = '';
 
 		$this->user['ID'] = '';
-		$this->user['Secret'] = '';
-		$this->user['Username'] = '';
-		$this->user['Forename'] = '';
-		$this->user['Surname'] = '';
-		$this->user['Name'] = '';
+		$this->user['GUID'] = '';
 		$this->user['IsReseller'] = false;
 		$this->user['IsCompanyAdmin'] = false;
+		
+		$this->person['ID'] = '';
+		$this->person['GUID'] = '';
 		
 		//If there was a post signature
 		if(isset($_GET['LG_Signature'])) {
@@ -85,21 +77,19 @@ class LucidGecko3 {
 			}
 						
 			//Set context information from Post data.
-			if(isset($_GET['LG_ParentCompanyKey'])) {
-				$this->parentCompany['Key'] = $_GET['LG_ParentCompanyKey'];
-			}
-
-			if(isset($_GET['LG_ParentCompanyName'])) {
-				$this->parentCompany['Name'] = $_GET['LG_ParentCompanyName'];
+			if(isset($_GET['LG_ParentCompanyGUID'])) {
+				$this->parentCompany['GUID'] = $_GET['LG_ParentCompanyGUID'];
 			}
 			
-			if(isset($_GET['LG_CompanyKey'])) {
-				$this->company['Key'] = $_GET['LG_CompanyKey'];
+			if(isset($_GET['LG_CompanyGUID'])) {
+				$this->company['GUID'] = $_GET['LG_CompanyGUID'];
 			}
 			
-			if(isset($_GET['LG_CompanyName'])) {
-				$this->company['Name'] = $_GET['LG_CompanyName'];
+			//Contact company - will only exist for company/people apps.
+			if(isset($_GET['LG_ContactCompanyGUID'])) {
+				$this->contactCompany['GUID'] = $_GET['LG_ContactCompanyGUID'];
 			}
+			
 			
 			//Set the location company.
 			if(!empty($this->company['Key'])) {
@@ -110,23 +100,23 @@ class LucidGecko3 {
 			
 			if(isset($_GET['LG_WorkspaceID']))	{
 				$this->workspace['ID'] = $_GET['LG_WorkspaceID'];
-				$this->workspace['Name'] = $_GET['LG_WorkspaceName'];
 			}	
 			
 			//Set user details/
 			$this->user['ID'] = $_GET['LG_UserID'];
-			$this->user['Secret'] = $_GET['LG_UserSecret'];
-			
-			if(isset($_GET['LG_Username'])) {
-				$this->user['Username'] = $_GET['LG_Username'];
-			}
-			
-			$this->user['Forename'] = $_GET['LG_UserForename'];
-			$this->user['Surname'] = $_GET['LG_UserSurname'];
-			$this->user['Name'] = $this->getUserFullName($this->user['Forename'], $this->user['Surname']);
+			$this->user['GUID'] = $_GET['LG_UserGUID'];
 			$this->user['IsReseller'] = (bool) $_GET['LG_UserIsReseller'];
 			$this->user['IsCompanyAdmin'] = (bool) $_GET['LG_UserIsCompanyAdmin'];
 			
+			//Contact person - will only exist for people apps.
+			if(isset($_GET['LG_PersonUserID'])) {
+				$this->person['ID'] = $_GET['LG_PersonUserID'];
+			}
+			
+			if(isset($_GET['LG_PersonGUID'])) {
+				$this->person['GUID'] = $_GET['LG_PersonGUID'];
+			}
+
 			$this->postbackUrl = $_GET['LG_PostbackUrl'];
 			
 			//Set the API server URL. Without this, LG can't communicate with SWM.
@@ -216,118 +206,6 @@ class LucidGecko3 {
 	}
 		
 	/**
-	 * Generates a one time only authentication key for the user.
-	 */
-	public function generateAuthKey() {
-		
-		$result = $this->postRequest('generateAuthKey');
-
-		return $result['auth_key'];
-	}
-	
-	/**
-	 * Validates an authentication.
-	 */
-	public function validateAuthKey($authKey) {
-		 
-		$params['authKey'] = $authKey;
-		
-		$result = $this->postRequest('validateAuthKey', $params);
-		
-		return $result;
-	}
-	
-	/**
-	 * Gets companies belonging to this reseller.
-	 */
-	public function getCompanies() {
-		
-		$result = $this->postRequest('getCompanies');
-		
-		return $result;
-				
-	}
-	
-	/***
-	 * Finds one or more companies by name.
-	 * @return 
-	 * @param object $searchString What to look for e.g. 'a' will return any company starting with a.
-	 * @param object $fields The fields to return in comma delimited list. Illegal fields will be automatically stripped.
-	 * @param object $startIndex The first record to return 0 will return the first record.
-	 * @param object $limit How many to return.
-	 */
-	public function findCompaniesByName($searchString, $fields = '*', $startIndex = 0, $limit = 999) {
-		
-		$params['searchString'] = $searchString;
-		$params['fields'] = $fields;
-		$params['startIndex'] = $startIndex;
-		$params['limit'] = $limit;
-		
-		$results = $this->postRequest('companies/find-by-name/', $params);
-		return $results;
-	}
-
-	// TODO - add listWorkspaces() - to return workspaces for the current company context
-
-	/**
-	 * Lists all websites.
-	 * @return 
-	 */
-	public function listWebsites($startIndex = 0, $limit = 999) {
-		
-		$params['startIndex'] = $startIndex;
-		$params['limit'] = $limit;
-		
-		$results = $this->postRequest('websites/list/', $params);
-		return $results;
-	}
-
-	/**
-	 * Lists all users.
-	 * @return 
-	 */
-	public function listUsers($startIndex = 0, $limit = 999) {
-		
-		$params['startIndex'] = $startIndex;
-		$params['limit'] = $limit;
-		
-		$results = $this->postRequest('users/list/', $params);
-		return $results;
-	}
-			
-	/**
-	 * Lists all countries.
-	 * @return 
-	 */
-	public function listCountries() {
-		$results = $this->postRequest('countries/list/');
-		return $results;
-	}
-	
-	/***
-	 * Adds a company.
-	 * @return 
-	 * @param object $companyName
-	 */
-	public function addCompany($companyName, $addressLine1 = '', 
-		$addressLine2 = '', $addressLine3 = '', $addressLine4 = '', 
-		$postcode = '', $countryCode = '', $tel = '', $fax = '', $logo = '') {
-		
-		$params['CompanyName'] = $companyName;
-		$params['AddressLine1'] = $addressLine1;
-		$params['AddressLine2'] = $addressLine2;
-		$params['AddressLine3'] = $addressLine3;
-		$params['AddressLine4'] = $addressLine4;
-		$params['Postcode'] = $postcode;
-		$params['CountryCode'] = $countryCode;
-		$params['Tel'] = $tel;
-		$params['Fax'] = $fax;
-		$params['Logo'] = $logo;
-		
-		return $this->getBooleanStatus($this->postRequest('companies/add/', $params));
-	}
-
-	/**
 	 * Puts an asset in to SWIM.
 	 * @param $folder string The folder to put the asset in to.
 	 * @param $fileName string The name of the file for the asset.
@@ -400,8 +278,6 @@ class LucidGecko3 {
 		
 		return $this->getBooleanStatus($this->postRequest('assets/delete-asset/',$params));
 	 }
-
-
 	 	 
 	/**
 	 * Add asset folder.
@@ -417,89 +293,15 @@ class LucidGecko3 {
 	}
 
 	/**
-	 * Adds a user in to the system.
-	 * @return 
-	 * @param object $forename
-	 */
-	public function addUser($params) {
-		return $this->getBooleanStatus($this->postRequest('users/add/', $params));
-	}
-
-	/***
-	 * Updates a user.
-	 */
-	public function updateUser($params) {			
-		return $this->getBooleanStatus($this->postRequest('users/update/', $params));
-	}
-	
+	* Returns one or more elements of profile data.
+	* @return array of profile data
+	**/
+	public function getProfileData($guid, $dataType, $tags = null) {
 		
-	/***
-	 * Adds a website.
-	 * @return 
-	 * @param object $domain
-	 */
-	public function addWebsite($domain) {
-		$params['Domain'] = $domain;
-		return $this->getBooleanStatus($this->postRequest('websites/add/', $params));
-	}
-	
-	/***
-	 * Updates the current company.
-	 */
-	public function updateCompany($params) {			
-		return $this->getBooleanStatus($this->postRequest('companies/update/', $params));
-	}
-	
-	/***
-	 * Gets details of the current company.
-	 * @return 
-	 * @param object $companyName
-	 */
-	public function getCompanyDetails() {
-		return $this->postRequest('companies/get-details/');
-	}
-	
-	/***
-	 * Returns details of a user.
-	 * @return 
-	 * @param object $userID
-	 */
-	public function getUserDetails($userID) {
-		$params['UserID'] = $userID;
-		return $this->postRequest('users/get-details/',$params);
-	}
-	 
-	/**
-	 * Stores some data remotely against the context. $data can be an array of key value pairs.
-	 */
-	public function putData($dataGroup, $dataKey, $data) {
+		$params['dataType'] = $dataType;
+		$results = $this->postRequest('data/get-profile-data/', $params);
 		
-		if(empty($data)) {
-			return false;
-		}
-		
-		$params['dataGroup'] = $dataGroup;
-		$params['dataKey'] = $dataKey;
-		$params['data'] = $data;
-		
-		return $this->getBooleanStatus($this->postRequest('putData',$params));
-		
-	}
-	
-	/**
-	 * Retrieves previously stored data by the data group.
-	 */
-	public function getDataByDataGroup($dataGroup) {
-
-		$params['dataGroup'] = $dataGroup;
-		
-		$results = $this->postRequest('getDataByDataGroup',$params);
-
-		if(is_array($results) && array_key_exists('results', $results)) {
-			return $results['results'];
-		} else {
-			return false;
-		}
+		return $results;
 	}
 	
 	/**
@@ -526,7 +328,7 @@ class LucidGecko3 {
 	/**
 	 * Post request to API server.
 	 */
-	private function postRequest($method, $params = null, $format = 'xml') {
+	private function postRequest($method, $params = null, $format = 'json') {
 		
 		try {
 		
@@ -592,30 +394,11 @@ class LucidGecko3 {
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Lucid Gecko 2.0 API PHP5 Client 1.0 (curl) ' . phpversion());			
 					
-				//die(http_build_query($params));
-				//http_build_query($params);
 				$rawResult = curl_exec($ch);
 			 
 			} else {
 				
-				// Non-CURL based version...
-				//TODO - Test and implement this version.
-				/*$context =
-				array('http' =>
-				      array('method' => 'POST',
-				            'header' => 'Content-type: application/x-www-form-urlencoded'."\r\n".
-				                        'User-Agent: Lucid Gecko API PHP5 Client 1.0 (non-curl) '.phpversion()."\r\n".
-				                        'Content-length: ' . strlen($parmsQs),
-				            'content' => $parmsQs));
-				$contextid=stream_context_create($context);
-				$sock=fopen($this->apiServer, 'r', false, $contextid);
-				if ($sock) {
-					$result='';
-					while (!feof($sock)) {
-					  $rawResult.=fgets($sock, 4096);
-					}
-					fclose($sock);
-				}*/
+				die('The PHP version of LucidGecko requires CURL.');
 			
 			}
 			
@@ -639,16 +422,7 @@ class LucidGecko3 {
 			
 			try {
 	
-				$xmlOutput = simplexml_load_string($rawResult);
-				$result = $this->convertSimpleXmlToArray($xmlOutput);
-				
-				//If this is a multi record result set.
-				if($xmlOutput['records']) {
-					$this->recordCount['records'] = (int)$xmlOutput['records'];
-					$this->recordCount['total_records'] = (int)$xmlOutput['total_records'];
-				} else {
-					unset($this->recordCount);
-				}
+				$result = json_decode($rawResult, true);
 		
 				if(is_array($result)) {
 					
@@ -701,7 +475,7 @@ class LucidGecko3 {
 		if(!array_key_exists('userID',$params) || !array_key_exists('userSecret',$params)) {
 			if(isset($this->user)) {
 				$params['userID'] = $this->user['ID'];
-				$params['userSecret'] = $this->user['Secret'];
+				$params['userGUID'] = $this->user['GUID'];
 			}
 		}
 
@@ -728,19 +502,7 @@ class LucidGecko3 {
 	      return (string)$sxml;
 	    }
 	}
-   
-  	/**
-	 * Returns a users full name if they have a surname specified.
-	 */
-	private function getUserFullName($forename, $surname) {
-		
-		$userFullName = $forename;
-		if(!empty($surname)) {
-			$userFullName .= ' ' . $surname;
-		}
-		
-		return $userFullName;
-	}
+
 
 	/**
 	 * Takes an array that hopefully looks like array('response'=>'success') and returns true/false depending on the status.
