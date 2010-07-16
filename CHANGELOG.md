@@ -1,3 +1,7 @@
+LucidGecko - 4.100716
+=====================
+- 0001156: [API Amendment] Correctly implement GetProfileData method (tom) - resolved.
+
 LucidGecko - 4.100709
 =====================
 - 0001132: [Refactor] Convert to use JSON (tom) - resolved.

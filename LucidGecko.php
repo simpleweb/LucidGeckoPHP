@@ -1,7 +1,7 @@
 <?php
 /**
  * LucidGecko Platform API - now with added Workspace support!
- * v4.100708
+ * v4.100716
  * -----------------------
  * @author Tom Holder & Luke Marsden
  */
@@ -296,9 +296,11 @@ class LucidGecko {
 	* Returns one or more elements of profile data.
 	* @return array of profile data
 	**/
-	public function getProfileData($guid, $dataType, $tags = null) {
+	public function getProfileData($guids, $dataType, $companyGuid = null) {
 		
-		$params['dataType'] = $dataType;
+		$params['profileDataType'] = $dataType;
+		$params['guids'] = $guids;
+		$params['companyGuid'] = $companyGuid;
 		$results = $this->postRequest('data/get-profile-data/', $params);
 		
 		return $results;
