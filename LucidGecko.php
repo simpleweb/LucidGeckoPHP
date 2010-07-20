@@ -307,6 +307,28 @@ class LucidGecko {
 	}
 	
 	/**
+	* Puts a request in to call a webhook with the specified interface and parameters.
+	* @return true/false depending on status.
+	* @param integer $installID The install id of the application we're calling.
+	* @param string $interfaceName The name of the interface we are calling. The application being called must implement this interface or an exception will be returned.
+	* @param array $params Data expected by the webhook.
+	**/
+	public function requestWebhook($installID, $interfaceName, $interfaceParams, $delay = false) {
+		
+		$params['endpointInstallID'] = $installID;
+		$params['interface'] = $interfaceName;
+		$params['interfaceParams'] = $interfaceParams;
+		
+		if($delay) {
+			$params['delay'] = $delay;
+		}
+		$results = $this->postRequest('webhook/request-webhook/', $params);
+		
+		return $results;
+		
+	}
+	
+	/**
 	 * Returns a random nonce string for web service calls. Each call must use a unique nonce.
 	 */
 	private function getNonce() {
