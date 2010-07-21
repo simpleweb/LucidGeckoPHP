@@ -1,3 +1,7 @@
+LucidGecko - 4.100719
+=====================
+- 0001158: [API Amendment] Implement webhooks (tom) - resolved.
+
 LucidGecko - 4.100716
 =====================
 - 0001156: [API Amendment] Correctly implement GetProfileData method (tom) - resolved.
