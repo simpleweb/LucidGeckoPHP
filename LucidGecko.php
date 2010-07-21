@@ -1,7 +1,7 @@
 <?php
 /**
- * LucidGecko Platform API - now with added Workspace support!
- * v4.100716
+ * LucidGecko Platform API - now with webhook love!
+ * v4.100719
  * -----------------------
  * @author Tom Holder & Luke Marsden
  */
