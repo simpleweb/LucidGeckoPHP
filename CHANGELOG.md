@@ -1,3 +1,7 @@
+LucidGecko - 4.100726
+=====================
+- 0001258: [API Amendment] Implement getProfileDataOfCompanyPeople (tom) - resolved.
+
 LucidGecko - 4.100719
 =====================
 - 0001158: [API Amendment] Implement webhooks (tom) - resolved.

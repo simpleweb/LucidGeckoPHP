@@ -1,7 +1,7 @@
 <?php
 /**
  * LucidGecko Platform API - now with webhook love!
- * v4.100719
+ * v4.100726
  * -----------------------
  * @author Tom Holder & Luke Marsden
  */
@@ -296,12 +296,25 @@ class LucidGecko {
 	* Returns one or more elements of profile data.
 	* @return array of profile data
 	**/
-	public function getProfileData($guids, $dataType, $companyGuid = null) {
+	public function getProfileData($guids, $dataType) {
 		
 		$params['profileDataType'] = $dataType;
 		$params['guids'] = $guids;
-		$params['companyGuid'] = $companyGuid;
 		$results = $this->postRequest('data/get-profile-data/', $params);
+		
+		return $results;
+	}
+	
+	/**
+	 * Returns profile data for a given type of all a companies people.
+	 * @param unknown_type $guid Must be a valid company guid.
+	 * @param unknown_type $dataType
+	 */
+	public function getProfileDataOfCompanyPeople($companyGuid, $dataType) {
+		
+		$params['profileDataType'] = $dataType;
+		$params['guid'] = $companyGuid;
+		$results = $this->postRequest('data/get-profile-data-of-company-people/', $params);
 		
 		return $results;
 	}
