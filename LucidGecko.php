@@ -90,9 +90,8 @@ class LucidGecko {
 				$this->contactCompany['GUID'] = $_GET['LG_ContactCompanyGUID'];
 			}
 			
-			
 			//Set the location company.
-			if(!empty($this->company['Key'])) {
+			if(!empty($this->company['GUID'])) {
 				$this->locationCompany = $this->company;
 			} else {
 				$this->locationCompany = $this->parentCompany;
