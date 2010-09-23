@@ -36,7 +36,7 @@ class LucidGecko {
 		
 		if(!isset($appKey)) throw new LucidGeckoException('No Application Key specified.');
 		if(!isset($appSecret)) throw new LucidGeckoException('No Application Secret specified.');
-	
+		
 		//Set the APP and API Keys
 		$this->_appKey = $appKey;
 		$this->_appSecret = $appSecret;
@@ -44,7 +44,9 @@ class LucidGecko {
 		$this->installSecret = $installSecret;
 
 		$this->parentCompany['GUID'] = '';
+		$this->parentCompany['UrlKey'] = '';
 		$this->company['GUID'] = '';
+		$this->company['UrlKey'] = '';
 		$this->contactCompany['GUID'] = '';
 
 		$this->workspace['ID'] = '';
@@ -81,8 +83,17 @@ class LucidGecko {
 				$this->parentCompany['GUID'] = $_GET['LG_ParentCompanyGUID'];
 			}
 			
+			if(isset($_GET['LG_ParentCompanyUrlKey'])) {
+				$this->parentCompany['UrlKey'] = $_GET['LG_ParentCompanyUrlKey'];
+			}
+			
+			
 			if(isset($_GET['LG_CompanyGUID'])) {
 				$this->company['GUID'] = $_GET['LG_CompanyGUID'];
+			}
+
+			if(isset($_GET['LG_CompanyUrlKey'])) {
+				$this->company['UrlKey'] = $_GET['LG_CompanyUrlKey'];
 			}
 			
 			//Contact company - will only exist for company/people apps.
