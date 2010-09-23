@@ -507,6 +507,14 @@ class LucidGecko {
 			throw new LucidGeckoException('Missing install context information for the application. It is not possible to call an API method without an InstallID and InstallSecret specified.');
 		}
 		
+		if(isset($this->contactCompany) && array_key_exists('GUID', $this->contactCompany) && !empty($this->contactCompany['GUID'])) {
+			$params['contactCompanyGUID'] = $this->contactCompany['GUID'];
+		}
+		
+		if(isset($this->person) && array_key_exists('GUID', $this->person) && !empty($this->person['GUID'])) {
+			$params['personGUID'] = $this->person['GUID'];
+		}
+				
 		//User information does not always have to be passed.
 		if(!array_key_exists('userID',$params) || !array_key_exists('userSecret',$params)) {
 			if(isset($this->user)) {
