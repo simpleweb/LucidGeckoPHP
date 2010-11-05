@@ -59,6 +59,8 @@ class LucidGecko {
 		$this->person['ID'] = '';
 		$this->person['GUID'] = '';
 		
+		$this->rawResponse = '';
+		
 		//If there was a post signature
 		if(isset($_GET['LG_Signature'])) {
 			
@@ -161,9 +163,9 @@ class LucidGecko {
 		$params['messageKey'] = $messageKey;
 		$params['extendedData'] = $extendedData;
 		
-		$result = $this->postRequest('activity/add/',$params);
+		$this->rawResponse = $this->postRequest('activity/add/',$params);
 		
-		return $this->getBooleanStatus($result);
+		return $this->getBooleanStatus($this->rawResponse);
 
 	}
 
@@ -185,9 +187,9 @@ class LucidGecko {
 		$params['extendedCallbackData'] = $extendedCallbackData;
 		$params['excludeCaller'] = $excludeCaller;
 		
-		$result = $this->postRequest('email/email-users/',$params);
+		$this->rawResponse = $this->postRequest('email/email-users/',$params);
 		
-		return $this->getBooleanStatus($result);
+		return $this->getBooleanStatus($this->rawResponse);
 
 	}
 
@@ -209,9 +211,9 @@ class LucidGecko {
 		$params['extendedCallbackData'] = $extendedCallbackData;
 		$params['excludeCaller'] = $excludeCaller;
 		
-		$result = $this->postRequest('email/email-company/',$params);
+		$this->rawResponse = $this->postRequest('email/email-company/',$params);
 		
-		return $this->getBooleanStatus($result);
+		return $this->getBooleanStatus($this->rawResponse);
 
 	}
 		
@@ -239,8 +241,8 @@ class LucidGecko {
 		
 		$params['folder'] = $folder;
 		
-		$results = $this->postRequest('assets/get-folders/', $params);
-		return $results;
+		$this->rawResponse = $this->postRequest('assets/get-folders/', $params);
+		return $this->rawResponse;
 		
 	}
 
@@ -253,8 +255,8 @@ class LucidGecko {
 		
 		$params['folder'] = $folder;
 		
-		$results = $this->postRequest('assets/get-assets-for-folder/', $params);
-		return $results;
+		$this->rawResponse = $this->postRequest('assets/get-assets-for-folder/', $params);
+		return $this->rawResponse;
 		
 	}
 
@@ -272,7 +274,8 @@ class LucidGecko {
 			$params['forceParentCompany'] = true;
 		}
 		
-		return $this->postRequest('assets/get-asset-details/',$params);
+		$this->rawResponse = $this->postRequest('assets/get-asset-details/',$params);
+		return $this->rawResponse;
 	 }
 	 
 	 /**
@@ -286,7 +289,8 @@ class LucidGecko {
 	 	$params['folder'] = $folder;
 	 	$params['file'] = $file;
 		
-		return $this->getBooleanStatus($this->postRequest('assets/delete-asset/',$params));
+	 	$this->rawResponse = $this->postRequest('assets/delete-asset/',$params);
+		return $this->getBooleanStatus($this->rawResponse);
 	 }
 	 	 
 	/**
@@ -424,7 +428,7 @@ class LucidGecko {
 	
 			//$parmsQs = http_build_query($params);
 			
-			$rawResult = ''; //Will hold our result.
+			$this->rawResponse = ''; //Will hold our result.
 			
 			if (function_exists('curl_init')) {
 				
@@ -443,7 +447,7 @@ class LucidGecko {
 				curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
 				curl_setopt($ch, CURLOPT_USERAGENT, 'Lucid Gecko 2.0 API PHP5 Client 1.0 (curl) ' . phpversion());			
 					
-				$rawResult = curl_exec($ch);
+				$this->rawResponse = curl_exec($ch);
 			 
 			} else {
 				
@@ -456,14 +460,14 @@ class LucidGecko {
 					
 				echo '<div class="pane"><h3>Lucid Gecko API Response</h3>';
 				echo '<dl><dt><strong>Method:</strong></dt><dd>' . $method . '</dd>';
-				echo '<dt><strong>Call:</strong></dt><dd class="grid full"><textarea style="width:100%; height: 100px;">' . htmlentities($rawResult) . '</textarea></dd></dl>';
+				echo '<dt><strong>Call:</strong></dt><dd class="grid full"><textarea style="width:100%; height: 100px;">' . htmlentities($this->rawResponse) . '</textarea></dd></dl>';
 				echo '</div>';	
 					
 			}
 			
-			$rawResult = trim($rawResult);
+			$this->rawResponse = trim($this->rawResponse);
 			
-			if(empty($rawResult)) {
+			if(empty($this->rawResponse)) {
 				throw new LucidGeckoException('An unknown error occurred. No response returned.');
 			}
 			
@@ -471,7 +475,7 @@ class LucidGecko {
 			
 			try {
 	
-				$result = json_decode($rawResult, true);
+				$result = json_decode($this->rawResponse, true);
 		
 				if(is_array($result)) {
 					
