@@ -336,15 +336,17 @@ class LucidGecko {
 	* @param string $interfaceName The name of the interface we are calling. The application being called must implement this interface or an exception will be returned.
 	* @param array $params Data expected by the webhook.
 	**/
-	public function requestWebhook($installID, $interfaceName, $interfaceParams, $delay = false) {
+	public function requestWebhook($installID, $interfaceName, $interfaceParams, $scheduled = false, $interval = false) {
 		
 		$params['endpointInstallID'] = $installID;
 		$params['interface'] = $interfaceName;
 		$params['interfaceParams'] = $interfaceParams;
-		
-		if($delay) {
-			$params['delay'] = $delay;
-		}
+
+                if($scheduled) {
+                    $params['scheduled'] = $scheduled;
+                    $params['interval'] = $interval;
+                }
+
 		$results = $this->postRequest('webhook/request-webhook/', $params);
 		
 		return $results;
