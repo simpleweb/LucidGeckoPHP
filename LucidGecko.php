@@ -328,9 +328,9 @@ class LucidGecko {
 		
 		$params['profileDataType'] = $dataType;
 		$params['guid'] = $companyGuid;
-		$results = $this->postRequest('data/get-profile-data-of-company-people/', $params);
+		$this->rawResponse = $this->postRequest('data/get-profile-data-of-company-people/', $params);
 		
-		return $results;
+		return $this->rawResponse;
 	}
 	
 	/**
@@ -353,9 +353,9 @@ class LucidGecko {
 			}
 		}
 		
-		$results = $this->postRequest('webhook/request-webhook/', $params);
+		$this->rawResponse = $this->postRequest('webhook/request-webhook/', $params);
 		
-		return $results;
+		return $this->rawResponse;
 		
 	}
 	
