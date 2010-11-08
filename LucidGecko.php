@@ -338,19 +338,21 @@ class LucidGecko {
 	* @return true/false depending on status.
 	* @param integer $installID The install id of the application we're calling.
 	* @param string $interfaceName The name of the interface we are calling. The application being called must implement this interface or an exception will be returned.
-	* @param array $params Data expected by the webhook.
+	* @param array $cronParams An array containing any of the cron job settings: Minute, Hour, DayOfMonth, Month, DayOfWeek. Must be either numeric or *.
 	**/
-	public function requestWebhook($installID, $interfaceName, $interfaceParams, $scheduled = false, $interval = false) {
+	public function requestWebhook($installID, $interfaceName, $interfaceParams, $cronParams = null) {
 		
 		$params['endpointInstallID'] = $installID;
 		$params['interface'] = $interfaceName;
 		$params['interfaceParams'] = $interfaceParams;
-
-                if($scheduled) {
-                    $params['scheduled'] = $scheduled;
-                    $params['interval'] = $interval;
-                }
-
+		
+		// Set the cron job parameters
+		if (is_array($cronParams)) {
+			foreach ($cronParams as $key => $value) {
+				$params[$key] = $value;
+			}
+		}
+		
 		$results = $this->postRequest('webhook/request-webhook/', $params);
 		
 		return $results;
